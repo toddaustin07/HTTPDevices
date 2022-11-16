@@ -1,0 +1,61 @@
+name: httpdimmer.v1
+components:
+  - id: main
+    capabilities:
+      - id: switchLevel
+        version: 1
+      - id: partyvoice23922.httpcode
+        version: 1
+    categories:
+      - name: Switch
+preferences:
+  - title: "Response Timeout"
+    name: timeout
+    description: "Number of seconds"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 60
+      default: 3
+  - title: "SETLEVEL HTTP Request"
+    name: setLevelrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=push"
+  - title: "SETLEVEL HTTP Request- more URL"
+    name: setLevelrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "SETLEVEL Request - Body"
+    name: setLevelbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "SETLEVEL Request - more Body"
+    name: setLevelbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "SETLEVEL Request - Headers"
+    name: setLevelheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"

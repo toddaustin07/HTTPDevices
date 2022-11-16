@@ -1,0 +1,129 @@
+name: httpmotion.v1
+components:
+  - id: main
+    capabilities:
+      - id: motionSensor
+        version: 1
+      - id: switch
+        version: 1
+      - id: partyvoice23922.httpcode
+        version: 1
+    categories:
+      - name: MotionSensor
+metadata:
+  ocfDeviceType: x.com.st.d.sensor.motion
+preferences:
+  - title: "Response Timeout"
+    name: timeout
+    description: "Number of seconds"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 60
+      default: 3
+  - title: "MOTION HTTP Request"
+    name: onrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=active"
+  - title: "MOTION HTTP Request- more URL"
+    name: onrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "MOTION Request - Body"
+    name: onbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "MOTION Request - more Body"
+    name: onbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "MOTION Request - Headers"
+    name: onheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "NO MOTION HTTP Request"
+    name: offrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=inactive"
+  - title: "NO MOTION HTTP Request- more URL"
+    name: offrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "NO MOTION Request - Body"
+    name: offbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "NO MOTION Request - more Body"
+    name: offbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "NO MOTION Request - Headers"
+    name: offheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Auto-revert motion to inactive"
+    name: autorevert
+    description: "Enable/disable"
+    required: true
+    preferenceType: boolean
+    definition:
+      default: false
+  - title: "Auto-revert delay"
+    name: revertdelay
+    description: "Number of seconds"
+    required: false
+    preferenceType: integer
+    definition:
+      minimum: 1
+      maximum: 86400
+      default: 3
+  - title: "Send HTTP request for auto-revert"
+    name: sendrevert
+    description: "Enable/disable"
+    required: true
+    preferenceType: boolean
+    definition:
+      default: false

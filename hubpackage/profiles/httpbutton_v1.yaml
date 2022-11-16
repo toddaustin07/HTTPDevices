@@ -1,0 +1,66 @@
+name: httpbutton.v1
+components:
+  - id: main
+    capabilities:
+      - id: momentary
+        version: 1
+      - id: button
+        version: 1
+      - id: partyvoice23922.httpcode
+        version: 1
+    categories:
+      - name: RemoteController
+metadata:
+  vid: f528f2fa-aaab-3bbc-b870-4315b1002119
+  mnmn: SmartThingsCommunity
+preferences:
+  - title: "Response Timeout"
+    name: timeout
+    description: "Number of seconds"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 60
+      default: 3
+  - title: "PUSH HTTP Request"
+    name: pushrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=push"
+  - title: "PUSH HTTP Request- more URL"
+    name: pushrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "PUSH Request - Body"
+    name: pushbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "PUSH Request - more Body"
+    name: pushbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "PUSH Request - Headers"
+    name: pushheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"

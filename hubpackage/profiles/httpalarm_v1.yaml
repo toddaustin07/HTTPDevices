@@ -1,0 +1,186 @@
+name: httpalarm.v1
+components:
+  - id: main
+    capabilities:
+      - id: alarm
+        version: 1
+      - id: partyvoice23922.httpcode
+        version: 1
+    categories:
+      - name: Siren
+metadata:
+  ocfDeviceType: x.com.st.d.siren
+preferences:
+  - title: "Response Timeout"
+    name: timeout
+    description: "Number of seconds"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 60
+      default: 3
+  - title: "OFF HTTP Request"
+    name: offrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=off"
+  - title: "OFF HTTP Request- more URL"
+    name: offrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OFF Request - Body"
+    name: offbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OFF Request - more Body"
+    name: offbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OFF Request - Headers"
+    name: offheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "SIREN HTTP Request"
+    name: sirenrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=siren"
+  - title: "SIREN HTTP Request- more URL"
+    name: sirenrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "SIREN Request - Body"
+    name: sirenbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "SIREN Request - more Body"
+    name: sirenbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "SIREN Request - Headers"
+    name: sirenheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "STROBE HTTP Request"
+    name: stroberequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=strobe"
+  - title: "STROBE HTTP Request- more URL"
+    name: stroberequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "STROBE Request - Body"
+    name: strobebodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "STROBE Request - more Body"
+    name: strobebodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "STROBE Request - Headers"
+    name: strobeheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "BOTH HTTP Request"
+    name: bothrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=both"
+  - title: "BOTH HTTP Request- more URL"
+    name: bothrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "BOTH Request - Body"
+    name: bothbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "BOTH Request - more Body"
+    name: bothbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "BOTH Request - Headers"
+    name: bothheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"

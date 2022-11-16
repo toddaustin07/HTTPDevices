@@ -1,0 +1,5 @@
+name: 'HTTP Devices V1'
+packageKey: 'httpdevicesv1'
+permissions:
+    lan: {}
+    discovery: {}

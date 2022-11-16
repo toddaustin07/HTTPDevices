@@ -1,0 +1,8 @@
+name: httpcreator.v1
+components:
+  - id: main
+    capabilities:
+      - id: partyvoice23922.createhttpdev1
+        version: 1
+    categories:
+      - name: Others

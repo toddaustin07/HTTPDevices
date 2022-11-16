@@ -1,0 +1,82 @@
+{
+    "dashboard": {
+        "states": [],
+        "actions": []
+    },
+    "detailView": [
+        {
+            "label": "{{i18n.label}}",
+            "displayType": "list",
+            "list": {
+                "command": {
+                    "name": "setDeviceType",
+                    "alternatives": [
+                        {
+                            "key": "Alarm",
+                            "value": "Alarm",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Dimmer",
+                            "value": "Dimmer",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Button",
+                            "value": "Momentary Button",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Motion",
+                            "value": "Motion",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Switch",
+                            "value": "Switch",
+                            "type": "active"
+                        }
+                    ],
+                    "argumentType": "string"
+                },
+                "state": {
+                    "value": "deviceType.value",
+                    "valueType": "string",
+                    "alternatives": [
+                        {
+                            "key": "Alarm",
+                            "value": "Alarm",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Dimmer",
+                            "value": "Dimmer",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Button",
+                            "value": "Momentary Button",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Motion",
+                            "value": "Motion",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Switch",
+                            "value": "Switch",
+                            "type": "active"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "automation": {
+        "conditions": [],
+        "actions": []
+    },
+    "id": "partyvoice23922.createhttpdev2",
+    "version": 1
+}

@@ -1,0 +1,102 @@
+name: httpswitch.v1
+components:
+  - id: main
+    capabilities:
+      - id: switch
+        version: 1
+      - id: partyvoice23922.httpcode
+        version: 1
+    categories:
+      - name: Switch
+preferences:
+  - title: "Response Timeout"
+    name: timeout
+    description: "Number of seconds"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 60
+      default: 3
+  - title: "ON HTTP Request"
+    name: onrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=on"
+  - title: "ON HTTP Request- more URL"
+    name: onrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "ON Request - Body"
+    name: onbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "ON Request - more Body"
+    name: onbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "ON Request - Headers"
+    name: onheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OFF HTTP Request"
+    name: offrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=off"
+  - title: "OFF HTTP Request- more URL"
+    name: offrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OFF Request - Body"
+    name: offbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OFF Request - more Body"
+    name: offbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OFF Request - Headers"
+    name: offheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"

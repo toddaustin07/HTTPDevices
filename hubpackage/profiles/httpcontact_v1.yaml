@@ -1,0 +1,106 @@
+name: httpcontact.v1
+components:
+  - id: main
+    capabilities:
+      - id: contactSensor
+        version: 1
+      - id: switch
+        version: 1
+      - id: partyvoice23922.httpcode
+        version: 1
+    categories:
+      - name: ContactSensor
+metadata:
+  ocfDeviceType: x.com.st.d.sensor.contact
+preferences:
+  - title: "Response Timeout"
+    name: timeout
+    description: "Number of seconds"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 60
+      default: 3
+  - title: "OPEN HTTP Request"
+    name: onrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=open"
+  - title: "OPEN HTTP Request- more URL"
+    name: onrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OPEN Request - Body"
+    name: onbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OPEN Request - more Body"
+    name: onbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "OPEN Request - Headers"
+    name: onheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "CLOSED HTTP Request"
+    name: offrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=closed"
+  - title: "CLOSED HTTP Request- more URL"
+    name: offrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "CLOSED Request - Body"
+    name: offbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "CLOSED Request - more Body"
+    name: offbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "CLOSED Request - Headers"
+    name: offheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"

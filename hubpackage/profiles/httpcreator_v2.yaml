@@ -1,0 +1,8 @@
+name: httpcreator.v2
+components:
+  - id: main
+    capabilities:
+      - id: partyvoice23922.createhttpdev2b
+        version: 1
+    categories:
+      - name: Others
