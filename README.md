@@ -13,7 +13,7 @@ This driver provides an alternative to using my [webrequestor driver](https://gi
 
 The devices created by this driver only *send out* HTTP requests based on commands and state changes.  They do not *receive* HTTP requests from external sources.  If a two-way integration is needed with external devices/apps, then my [MQTTDevices driver](https://github.com/toddaustin07/MQTTDevices) may be a more suitable alternative.
 
-Any body data in the response to the HTTP request is ignored.
+Any body data in the *response* to the HTTP request is ignored.
 
 
 ## Pre-requisites
@@ -74,6 +74,10 @@ All requests are sent with an Accept: \*/\* by default.  It can be overridden by
 
 Be sure to delete all content from unused Headers fields.
     
+#### Motion Devices
+
+These devices have additional Settings options to enable/disable an **auto-revert feature** and to set the auto-revert delay in seconds.  This is useful to automatically have the motion device revert back to 'no motion' after motion detected is turned on.  You can also configure whether or not to send a 'no-motion' HTTP message when the auto-revert is activated.
+
 #### Dimmer (switchLevel) Devices
 Since a dimmer device can have a range of values as opposed to a fixed set of values (like on/off for a switch), the HTTP request is configured a bit differently. *One* HTTP request URL is configured to be sent whenever the switchLevel changes, but the request is configured with a special variable that will be automatically replaced with the current dimmer value when sent.  This special variable is: ***${level}***.  This can be included either as part of the URL string or in the body.
 
@@ -85,3 +89,11 @@ Example body:
 ```
 {"level": ${level}}
 ```
+
+## Usage
+
+Each device behaves like any typical 'virtual' Edge device.  For devices that typically have no specific user controls (such as motion or contact), a switch is included on the Controls screen that can be used to set the current state - either from the mobile app or from automation routines.
+
+Each device has on its Controls screen an "HTTP Response Code" field which will display the results of the most recent HTTP request sent.  
+
+Automations can be used to control the devices.
