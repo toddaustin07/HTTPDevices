@@ -25,8 +25,6 @@ Install driver using [this channel invite link](https://bestow-regional.api.smar
 
 Once available on your hub, use the SmartThings mobile app to initiate an *Add device / Scan for nearby devices*. A new device called 'HTTP Device Creator' will be found in your 'No room assigned' room.  Open the device and use the 'Select & Create HTTP Device' button to choose a device type and it will be created and found in your 'No room assigned' room.
 
-go to the device Settings menu (3 vertical dot menu in upper right corner of Controls tab).  Provide the username and password (if required) for your MQTT broker, and the IP address of the MQTT broker.  Return to the Controls screen and the Status field there will indicate if the driver is now connected to the MQTT broker.
-
 ### Device Settings
 
 Each created device has the following settings:
