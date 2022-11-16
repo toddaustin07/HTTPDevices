@@ -50,7 +50,8 @@ GET:https://<ip:port/path> --OR-- POST:https://<ip:port/path> --OR-- PUT:https:/
 ##### Body (optional)
 Use this field to include additional data with your HTTP request.  
 
-The format is typically going to be provided as plain text, JSON-formatted, or XML-formatted string, however no syntax or formatting validation is done on this field. If the needed body exceeds the limitations of this field, a second body field 'more Body' is provided which will be contatenated to the first when the request is sent.  
+The format is typically going to be provided as plain text, JSON-formatted, or XML-formatted string, however no syntax or formatting validation is done on this field. If the needed body exceeds the limitations of this field, a second body field 'more Body' is provided which will be contatenated to the first when the request is sent.
+
 Be sure to delete all content from unused body fields.
 
 ##### Headers (optional)
