@@ -92,6 +92,6 @@ Example body:
 
 Each device behaves like any typical 'virtual' Edge device.  For devices that typically have no specific user controls (such as motion or contact), a switch is included on the Controls screen that can be used to set the current state - either from the mobile app or from automation routines.
 
-Each device has on its Controls screen an "HTTP Response Code" field which will display the results of the most recent HTTP request sent.  
+Each device has on its Controls screen an "HTTP Response Code" field which will display the results of the most recent HTTP request sent. Any 2xx response code is considered a successful response.  A 4xx or 5xx response code will appear if the recipient finds any errors or otherwise cannot process the request. 
 
 Automations can be used to control the devices.
