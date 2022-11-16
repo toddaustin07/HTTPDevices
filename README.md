@@ -1,13 +1,13 @@
 # HTTPDevices
 SmartThings Edge Driver to create devices with built-in HTTP interface to notify external LAN-based devices/apps of commands and state changes.
 
-Currently supported device types:  switch, dimmer, momentary button, contact, motion, alarm
+Currently supported device types:  **switch, dimmer, momentary button, contact, motion, alarm**
 
 Additional device types can be added upon request.
 
 ## Use Case
 
-This driver provides an alternative to using my [webrequestor driver](https://github.com/toddaustin07/webrequestor) to send http requests.  Rather than a generic web request driver that must be initiated through automations or manual selection in the mobile app, this driver creates specific device types that can be configured to send HTTP requests associated with that device's specific capabilities.  This can reduce the number of automations needed to achieve the desired results.
+This driver provides an alternative to using my [webrequestor driver](https://github.com/toddaustin07/webrequestor) to send HTTP requests.  Rather than a generic web request driver that must be initiated through automations or manual selection in the mobile app, this driver creates specific device types that can be configured to send HTTP requests associated with that device's specific capabilities.  This can reduce the number of automations needed to achieve the desired results.
 
 ### Caveats
 
