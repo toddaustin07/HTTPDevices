@@ -1,7 +1,7 @@
 # HTTPDevices
 SmartThings Edge Driver to create devices with built-in HTTP interface to notify external LAN-based devices/apps of commands and state changes.
 
-Currently supported device types:  **switch, dimmer, momentary button, contact, motion, alarm**
+Currently supported device types:  **switch, dimmer, momentary button, contact, motion, alarm, temperature+humidity**
 
 Additional device types can be added upon request.
 
@@ -23,7 +23,7 @@ Any body data in the *response* to the HTTP request is ignored.
 ## Installation / Configuration
 Install driver using [this channel invite link](https://bestow-regional.api.smartthings.com/invite/Q1jP7BqnNNlL).  Enroll your hub and choose "HTTP Devices V1" from the list of drivers to install.
 
-Once available on your hub, use the SmartThings mobile app to initiate an *Add device / Scan for nearby devices*. A new device called 'HTTP Device Creator' will be found in your 'No room assigned' room.  Open the device and use the 'Select & Create HTTP Device' button to choose a device type and it will be created and found in your 'No room assigned' room.
+Once available on your hub, use the SmartThings mobile app to initiate an *Add device / Scan for nearby devices*. A new device called 'HTTP Device Creator' will be found in your hub device room.  Open the device and use the 'Select & Create HTTP Device' button to choose a device type and it will be created and found in your hub device room.
 
 ### Device Settings
 
@@ -33,7 +33,14 @@ Each created device has the following settings:
 As a default, the driver will timeout if no response is received within 3 seconds. However this can be changed in this Settings option
 
 #### HTTP Requests
-For each supported state change (e.g. on/off for switch; open/closed for contact, etc.), a specific HTTP request can be defined. Each configured request consists of the request URL string plus optional body and headers
+In the latest driver version, some devices utilize a single URL plus variable substitution, while others utilize separate URLs for each device state change:
+* Dimmer, Temperature+Humidity utilize a single URL with variable substitution
+* Contact, Motion, Alarm, Button utilize individual URLs for each possible state
+* Switch provides for either method to be used: individual URLs or a single URL using variable substitution (${switch})
+
+In all cases, very long URLs or HTTP bodies are accommodated by provided two configuration fields that are concatenated together.  This may be necessary in cases where the built-in SmartThings field length limitation (about 250 characters) is insufficient.
+
+Each configured request consists of the request URL string plus optional body and headers
 ##### URL String (required)
 The format MUST be as follows:
 ```
@@ -44,11 +51,11 @@ GET:https://<ip:port/path> --OR-- POST:https://<ip:port/path> --OR-- PUT:https:/
 **Notes regarding URL string**
 * You must include a valid IP and port number; if you wouldn’t specify a port number in other apps or a browser, then use ‘:80’
 * If your URL contains any spaces, use ‘%20’
-* URL strings can include any valid HTTP URL string, including parameters in the form of '?parm1=xxx'
+* URL strings can include any valid HTTP URL string, including parameters in the form of '?parm1=xxx'; For those devices supporting variable substitution, the parameter list typically includes the state variables
 * A second 'more URL' field is provided in order to accommodate long strings.  They are simply concatenated together when sent.  Be sure to delete all content from unused 'more URL' fields
 
 ##### Body (optional)
-Use this field to include additional data with your HTTP request.  
+Use this field to include additional data with your HTTP request. For those devices supporting variable substitution, the body can contain the state variables.
 
 The format is typically going to be provided as plain text, JSON-formatted, or XML-formatted string, however no syntax or formatting validation is done on this field. If the needed body exceeds the limitations of this field, a second body field 'more Body' is provided which will be contatenated to the first when the request is sent.
 
@@ -78,20 +85,24 @@ Be sure to delete all content from unused Headers fields.
 These devices have additional Settings options to enable/disable an **auto-revert feature** and to set the auto-revert delay in seconds.  This is useful to automatically have the motion device revert back to 'no motion' after motion detected is turned on.  You can also configure whether or not to send a 'no-motion' HTTP message when the auto-revert is activated.
 
 #### Dimmer (switchLevel) Devices
-Since a dimmer device can have a range of values as opposed to a fixed set of values (like on/off for a switch), the HTTP request is configured a bit differently. *One* HTTP request URL is configured to be sent whenever the switchLevel changes, but the request is configured with a special variable that will be automatically replaced with the current dimmer value when sent.  This special variable is: ***${level}***.  This can be included either as part of the URL string or in the body.
+Since a dimmer device can have a range of values as opposed to a fixed set of values (like on/off for a switch), the HTTP request is configured a bit differently. *One* HTTP request URL is configured to be sent whenever the switchLevel changes, but the request is configured with special variables that will be automatically replaced with the current dimmer and/or switch value when sent.  These special variables are: ***${level}*** and ***$(switch)***.  These can be included either as part of the URL string or in the body.
 
 Example URL string:
 ```
-POST:http://192.168.1.105:8765/api/dimmer?state=${level}
+POST:http://192.168.1.105:8765/api/dimmer?state=${level}&switch=${switch}
 ```
 Example body:
 ```
-{"level": ${level}}
+{"level": ${level}, "switch": ${switch}}
 ```
+
+#### Temperature+Humidity
+Like the Dimmer device, this device can have a range of values so variable substitution is used within a single specified HTTP request.  These special variables are: ***${temperature}*** and ***$(humidity)***
+
 
 ## Usage
 
-Each device behaves like any typical 'virtual' Edge device.  For devices that typically have no specific user controls (such as motion or contact), a switch is included on the Controls screen that can be used to set the current state - either from the mobile app or from automation routines.
+Each device behaves like any typical 'virtual' Edge device.  For devices that typically have no specific user controls (such as motion or contact), a switch is included on the Controls screen that can be used to set the current state - either from the mobile app or from automation routines.  In the case of the Temperature+Humidity device, controls are provided to set the temperature and humidity values.
 
 Each device has on its Controls screen an "HTTP Response Code" field which will display the results of the most recent HTTP request sent. Any 2xx response code is considered a successful response.  A 4xx or 5xx response code will appear if the recipient finds any errors or otherwise cannot process the request. 
 
