@@ -38,21 +38,26 @@ local creator_device
 local clearcreatemsg_timer
 
 -- Constants
-local CREATOR_PROFILE = 'httpcreator.v2'
+local CREATOR_PROFILE = 'httpcreator.v2b'
 local CREATOR_CAPABILITY = 'partyvoice23922.createhttpdev2b'
+local SINGLEURLPREFIX = 'xx'
 
 -- Custom capabilities
 local cap_createdev = capabilities[CREATOR_CAPABILITY]
 local cap_httpcode = capabilities["partyvoice23922.httpcode"]
 
+local cap_settemp = capabilities["partyvoice23922.vtempset"]
+local cap_sethumidity = capabilities["partyvoice23922.vhumidityset"]
+
 
 local typemeta =  {
-                    ['Switch']     = { ['profile'] = 'httpswitch.v1',        ['capability'] = 'switch' },
-                    ['Button']     = { ['profile'] = 'httpbutton.v1',        ['capability'] = 'momentary' },
-                    ['Alarm']      = { ['profile'] = 'httpalarm.v1',         ['capability'] = 'alarm' },
-                    ['Dimmer']     = { ['profile'] = 'httpdimmer.v1',        ['capability'] = 'switchLevel' },
-                    ['Motion']     = { ['profile'] = 'httpmotion.v1',        ['capability'] = 'switch' },
-                    ['Contact']    = { ['profile'] = 'httpcontact.v1',       ['capability'] = 'switch' },
+                    ['Switch']      = { ['profile'] = 'httpswitch.v2',     ['capability'] = 'switch' },
+                    ['Button']      = { ['profile'] = 'httpbutton.v1',     ['capability'] = 'momentary' },
+                    ['Alarm']       = { ['profile'] = 'httpalarm.v1',      ['capability'] = 'alarm' },
+                    ['Dimmer']      = { ['profile'] = 'httpdimmer.v2',     ['capability'] = 'switchLevel' },
+                    ['Motion']      = { ['profile'] = 'httpmotion.v1',     ['capability'] = 'switch' },
+                    ['Contact']     = { ['profile'] = 'httpcontact.v1',    ['capability'] = 'switch' },
+                    ['Temperature'] = { ['profile'] = 'httptemp.v1',       ['capability'] = 'temperatureMeasurement' },
                   }
 
 
@@ -134,6 +139,8 @@ end
 
 -- Validate provided http request string
 local function validate(input, silent)
+
+  if not input then; return; end
 
   local msg
   local method = string.upper(input:match('(%a+):'))
@@ -390,8 +397,16 @@ local function build_all_requests(device)
 
   local capability = typemeta[devtype(device)].capability
       
-  for cmd, meta in pairs(capabilities[capability].commands) do
-    build_request(device, meta.NAME)
+  if devtype(device) ~= 'Temperature' then
+    for cmd, meta in pairs(capabilities[capability].commands) do
+      build_request(device, meta.NAME)
+    end
+  else
+    build_request(device,'setTemp')
+  end
+  
+  if devtype(device) == 'Switch' then
+    build_request(device, SINGLEURLPREFIX)
   end
 
 end
@@ -413,23 +428,60 @@ end
 
 
 local function request_setup(device, command)
+  
+  local req_prefix
 
-  if http_requests[device.id][command.command] then
-  
-    local url = http_requests[device.id][command.command].url
-    local body = http_requests[device.id][command.command].body
-    local headers = http_requests[device.id][command.command].headers
-  
-    if command.command == 'setLevel' then
-      url = insertvar('${level}', command.args.level, url)
-      body = insertvar('${level}', command.args.level, body)
-    end
+  if device.preferences.reqtype == 'single' then
+    req_prefix = SINGLEURLPREFIX
+  elseif devtype(device) == 'Dimmer' then
+    req_prefix = 'setLevel'
+  elseif devtype(device) == 'Temperature' then
+    req_prefix = 'setTemp'
+  else
+    req_prefix = command.command
+  end
     
-    log.info (string.format('SEND %s COMMAND: %s', http_requests[device.id][command.command].method, url))
+  if http_requests[device.id][req_prefix] then
+    
+    local url = http_requests[device.id][req_prefix].url
+    local body = http_requests[device.id][req_prefix].body
+    local headers = http_requests[device.id][req_prefix].headers
+
+    local varsubs = {
+                      ['Alarm'] = '${alarm}',
+                      ['Button'] = '${button}',
+                      ['Contact'] = '${contact}',
+                      ['Dimmer'] = '${level}',
+                      ['Motion'] = '${motion}',
+                      ['Switch'] = '${switch}',
+                      ['Temp'] = '${temperature}',
+                      ['Humidity'] = '${humidity}',
+                    }
+  
+    if req_prefix == SINGLEURLPREFIX then
+      url = insertvar(varsubs[devtype(device)], command.command, url)
+      body = insertvar(varsubs[devtype(device)], command.command, body)
+      
+    elseif devtype(device) == 'Dimmer' then
+      url = insertvar(varsubs['Dimmer'], device.state_cache.main.switchLevel.level.value, url)
+      body = insertvar(varsubs['Dimmer'], device.state_cache.main.switchLevel.level.value, body)
+      if device:supports_capability_by_id('switch') then
+        url = insertvar(varsubs['Switch'], device.state_cache.main.switch.switch.value, url)
+        body = insertvar(varsubs['Switch'], device.state_cache.main.switch.switch.value, body)
+      end
+      
+    elseif devtype(device) == 'Temperature' then
+      url = insertvar(varsubs['Temp'], device.state_cache.main.temperatureMeasurement.temperature.value, url)
+      url = insertvar(varsubs['Humidity'], device.state_cache.main.relativeHumidityMeasurement.humidity.value, url)
+      body = insertvar(varsubs['Temp'], device.state_cache.main.temperatureMeasurement.temperature.value, body)
+      body = insertvar(varsubs['Humidity'], device.state_cache.main.relativeHumidityMeasurement.humidity.value, body)
+      
+    end
+      
+    log.info (string.format('SEND %s COMMAND: %s', http_requests[device.id][req_prefix].method, url))
     log.info (string.format('\twith body: %s', body))
     log.info (string.format('\twith headers: %s', headers))
-    
-    device.thread:queue_event(issue_request, device, http_requests[device.id][command.command].method, url, body, headers)
+    device.thread:queue_event(issue_request, device, http_requests[device.id][req_prefix].method, url, body, headers)
   
   else
     log.warn ('HTTP request not configured for', command.command)
@@ -485,6 +537,7 @@ local function handle_switch(driver, device, command)
       contactstate = 'closed'
     end
     device:emit_event(capabilities.contactSensor.contact(contactstate))
+    
   end
   
   request_setup(device, command)
@@ -517,6 +570,40 @@ local function handle_dimmer(driver, device, command)
   
   device:emit_event(capabilities.switchLevel.level(command.args.level))
   
+  if device:supports_capability_by_id('switch') then
+    if command.args.level > 0 then
+      if device.state_cache.main.switch.switch.value ~= 'on' then
+        device:emit_event(capabilities.switch.switch('on'))
+      end
+    elseif command.args.level == 0 then
+      if device.state_cache.main.switch.switch.value ~= 'off' then
+        device:emit_event(capabilities.switch.switch('off'))
+      end
+    end
+  end
+  
+  request_setup(device, command)
+  
+end
+
+
+local function handle_settemp(_, device, command)
+
+  if command.command == 'setvTemp' then
+    local tempunit = 'C'
+    if device.preferences.tempunit == 'fahrenheit' then
+      tempunit = 'F'
+    end
+    log.info (string.format('Temperature set to %s', command.args.temp))
+    device:emit_event(cap_settemp.vtemp({value=command.args.temp, unit=tempunit}))
+    device:emit_event(capabilities.temperatureMeasurement.temperature({value = command.args.temp, unit=tempunit}))
+    
+  elseif command.command == 'setvHumidity' then
+    log.info (string.format('Humidity set to %s', command.args.humidity))
+    device:emit_event(cap_sethumidity.vhumidity(command.args.humidity))
+    device:emit_event(capabilities.relativeHumidityMeasurement.humidity(command.args.humidity))
+  end
+  
   request_setup(device, command)
   
 end
@@ -533,7 +620,7 @@ local function device_init(driver, device)
   log.debug ('Initializing Device type:', devtype(device))
   if devtype(device) == 'Master' then
   
-    device:try_update_metadata({profile=CREATOR_PROFILE})
+    device:try_update_metadata({profile=CREATOR_PROFILE})     -- **** REMOVE AT NEXT UPDATE ****
   
     creator_device = device
     device:emit_event(cap_createdev.deviceType(' ', { visibility = { displayed = false } }))
@@ -560,7 +647,7 @@ local function device_added (driver, device)
 
   if dtype ~= 'Master' then
 
-    if dtype == 'Switch' or dtype == 'Motion' or dtype == 'Contact' then
+    if dtype == 'Switch' or dtype == 'Motion' or dtype == 'Contact' or dtype == 'Dimmer' then
       device:emit_event(capabilities.switch.switch('off'))
     end
     
@@ -577,6 +664,11 @@ local function device_added (driver, device)
       device:emit_event(capabilities.motionSensor.motion('inactive'))
     elseif dtype == 'Contact' then
       device:emit_event(capabilities.contactSensor.contact('closed'))
+    elseif dtype == 'Temperature' then
+      device:emit_event(capabilities.temperatureMeasurement.temperature({value=0, unit='C'}))
+      device:emit_event(capabilities.relativeHumidityMeasurement.humidity(0))
+      device:emit_event(cap_settemp.vtemp({value=0, unit='C'}))
+      device:emit_event(cap_sethumidity.vhumidity(0))
     end
     
     creator_device:emit_event(cap_createdev.deviceType('Device created'))
@@ -719,9 +811,15 @@ thisDriver = Driver("thisDriver", {
     [capabilities.switchLevel.ID] = {
       [capabilities.switchLevel.commands.setLevel.NAME] = handle_dimmer,
     },
+    [cap_settemp.ID] = {
+      [cap_settemp.commands.setvTemp.NAME] = handle_settemp,
+    },
+    [cap_sethumidity.ID] = {
+      [cap_sethumidity.commands.setvHumidity.NAME] = handle_settemp,
+    },
   }
 })
 
-log.info ('HTTP Devices v1.1 Started')
+log.info ('HTTP Devices v1.2 Started')
 
 thisDriver:run()

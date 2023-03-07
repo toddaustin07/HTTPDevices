@@ -1,0 +1,152 @@
+name: httpswitch.v2
+components:
+  - id: main
+    capabilities:
+      - id: switch
+        version: 1
+      - id: partyvoice23922.httpcode
+        version: 1
+    categories:
+      - name: Switch
+preferences:
+  - title: "Response Timeout"
+    name: timeout
+    description: "Number of seconds"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 60
+      default: 3
+  - title: "HTTP Request URL Scheme"
+    name: reqtype
+    description: "Choose a Scheme"
+    required: true
+    preferenceType: enumeration
+    definition:
+      options:
+        separate: "Separate state URLs"
+        single: "Single URL with ${switch}"
+      default: separate
+  - title: "Single HTTP Request"
+    name: xxrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=${switch}"
+  - title: "Single HTTP Request- more URL"
+    name: xxrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Single Request - Body"
+    name: xxbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Single Request - more Body"
+    name: xxbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Single Request - Headers"
+    name: xxheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+  - title: "On-state HTTP Request"
+    name: onrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=on"
+  - title: "On-state HTTP Request- more URL"
+    name: onrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "On-state Request - Body"
+    name: onbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "On-state Request - more Body"
+    name: onbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "On-state Request - Headers"
+    name: onheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Off-state HTTP Request"
+    name: offrequesta
+    description: "Method:URL string"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      minLength: 18
+      default: "POST:http://192.168.1.n:8888/path?state=off"
+  - title: "Off-state HTTP Request- more URL"
+    name: offrequestb
+    description: "Continued URL string"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Off-stateRequest - Body"
+    name: offbodya
+    description: "HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Off-state Request - more Body"
+    name: offbodyb
+    description: "Additional HTTP body"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"
+  - title: "Off-state Request - Headers"
+    name: offheaders
+    description: "Comma-delimited header list"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "--"

@@ -40,6 +40,11 @@
                             "key": "Switch",
                             "value": "Switch",
                             "type": "active"
+                        },
+                        {
+                            "key": "Temperature",
+                            "value": "Temperature & Humidity",
+                            "type": "active"
                         }
                     ],
                     "argumentType": "string"
@@ -76,6 +81,11 @@
                         {
                             "key": "Switch",
                             "value": "Switch",
+                            "type": "active"
+                        },
+                        {
+                            "key": "Temperature",
+                            "value": "Temperature & Humidity",
                             "type": "active"
                         }
                     ]
