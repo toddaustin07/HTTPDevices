@@ -69,7 +69,6 @@ Content-Type=text/html, Authorization=mytoken12345
 ```
     
   * Note the use of the '**=**' (equals) character between headerkey and value; *not* ':' (colon)
-  * Note this precludes the use of comma characters in the header values themselves.
   * Spaces are allowed in the value (although not in the headerkey). For example: 'Authorization=Bearer mytokenabcd1234'
 
 If a body is included in the request, then a Content-Type header should be specified.
