@@ -84,7 +84,7 @@ Be sure to delete all content from unused Headers fields.
 These devices have additional Settings options to enable/disable an **auto-revert feature** and to set the auto-revert delay in seconds.  This is useful to automatically have the motion device revert back to 'no motion' after motion detected is turned on.  You can also configure whether or not to send a 'no-motion' HTTP message when the auto-revert is activated.
 
 #### Dimmer (switchLevel) Devices
-Since a dimmer device can have a range of values as opposed to a fixed set of values (like on/off for a switch), the HTTP request is configured a bit differently. *One* HTTP request URL is configured to be sent whenever the switchLevel changes, but the request is configured with special variables that will be automatically replaced with the current dimmer and/or switch value when sent.  These special variables are: ***${level}*** and ***$(switch)***.  These can be included either as part of the URL string or in the body.
+Since a dimmer device can have a range of values as opposed to a fixed set of values (like on/off for a switch), a single HTTP request is configured to be sent whenever the switchLevel changes, but the request is configured with special variables that will be automatically replaced with the current dimmer-level and/or switch value when sent.  These special variables are: ***${level}*** and ***$(switch)***.  These can be included either as part of the URL string or in the body.
 
 Example URL string:
 ```
