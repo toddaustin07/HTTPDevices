@@ -96,7 +96,7 @@ Example body:
 ```
 
 #### Temperature+Humidity
-Like the Dimmer device, this device can have a range of values so variable substitution is used within a single specified HTTP request.  These special variables are: ***${temperature}*** and ***$(humidity)***
+Like the Dimmer device, this device can have a range of values so variable substitution is used within a single specified HTTP request.  These special variables are: ***${temperature}*** and ***${humidity}***
 
 
 ## Usage
